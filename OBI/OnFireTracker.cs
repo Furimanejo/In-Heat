@@ -20,12 +20,12 @@ namespace OBI
     {
         PictureBox pictureBox;
         Image<Bgr, Byte> frame;
-        Point barStart = new Point(280, 990);
-        Rectangle barRect;
-        List<float> valuesRead = new List<float>();
+        Rectangle barRect1080p = new Rectangle(275, 975, 210, 25);
+        
         float readValueMultiplier = 1 / .8f;
+
+        public List<float> valuesRead = new List<float>();
         public int readsPerSecond = 30;
-        public int secondsToAcummulate = 1;
 
         public float lastReadValue 
         {
@@ -58,19 +58,17 @@ namespace OBI
             string path = "..//..//Screenshot_1.png";
             frame = new Image<Bgr, Byte>(path);
 
-            //HARDCODED
-            barRect = new Rectangle(barStart.X - 20, barStart.Y - 20, 250, 40);
             //crop
-            frame.ROI = barRect;
+            frame.ROI = barRect1080p;
             frame = frame.Copy();
             ProcessFrame();
         }
-        
+
         public void Update()
         {
             CaptureFrame();
             ProcessFrame();
-        }       
+        }
 
         void ProcessFrame()
         {
@@ -99,8 +97,13 @@ namespace OBI
                 value = value > 1 ? 1 : value;
                 UpdatePictureBox(bars[chosenBarIndex].ToBitmap());
             }
+            else
+            {
+                UpdatePictureBox(frame.CopyBlank().ToBitmap());
+            }
+
             valuesRead.Add(value);
-            if (valuesRead.Count > secondsToAcummulate*readsPerSecond)
+            while (valuesRead.Count > readsPerSecond * 4);
                 valuesRead.RemoveAt(0);
         }
 
@@ -135,7 +138,7 @@ namespace OBI
             for (int i = 0; i < contours.Size; i++)
             {
                 var rect = CvInvoke.BoundingRectangle(contours[i]);
-                if (rect.Width > maxWidth && rect.Width > .7f * barRect.Width)
+                if (rect.Width > maxWidth && rect.Width > .7f * barRect1080p.Width)
                 {
                     maxWidth = rect.Width;
                     index = i;
@@ -161,7 +164,7 @@ namespace OBI
         {
             var tempGray = FindEdgesInFrame();
             
-            LineSegment2D[] houghLines = CvInvoke.HoughLinesP(tempGray, .5, Math.PI/180, 10, .6* barRect.Width, 10);
+            LineSegment2D[] houghLines = CvInvoke.HoughLinesP(tempGray, .5, Math.PI/180, 10, .6* barRect1080p.Width, 10);
             List<LineSegment2D> possibleBarLines = new List<LineSegment2D>();
             int x1 = 0;
             int x2 = 0;
@@ -217,9 +220,9 @@ namespace OBI
 
         void CaptureFrame()
         {
-            Bitmap captureBitmap = new Bitmap(barRect.Width, barRect.Height);
+            Bitmap captureBitmap = new Bitmap(barRect1080p.Width, barRect1080p.Height);
             Graphics captureGraphics = Graphics.FromImage(captureBitmap);
-            captureGraphics.CopyFromScreen(barRect.Left, barRect.Top, 0, 0, barRect.Size);
+            captureGraphics.CopyFromScreen(barRect1080p.Left, barRect1080p.Top, 0, 0, barRect1080p.Size);
             frame = captureBitmap.ToImage<Bgr, Byte>();
         }
 
