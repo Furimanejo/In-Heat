@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Buttplug;
 
-namespace OBI
+namespace InHeat
 {
     class ClientController
     {

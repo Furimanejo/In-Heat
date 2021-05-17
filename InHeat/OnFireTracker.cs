@@ -14,7 +14,7 @@ using Emgu.CV;
 using Emgu.CV.Util;
 using Emgu.CV.Structure;
 
-namespace OBI
+namespace InHeat
 {
     class OnFireTracker
     {

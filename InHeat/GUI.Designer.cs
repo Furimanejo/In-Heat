@@ -1,4 +1,4 @@
-﻿namespace OBI
+﻿namespace InHeat
 {
     partial class GUI
     {
