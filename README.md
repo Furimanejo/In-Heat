@@ -21,7 +21,9 @@ The basic computer vision flow is:
 
 ## Making It Run
 
-- Open Intiface Desktop (https://intiface.com/desktop/) and start the server, the computer icon on the top right should turn green.
+- Download In Heat (https://github.com/Furimanejo/In-Heat/releases) and Intiface Desktop (https://intiface.com/desktop/).
+- Open Intiface Desktop and start the server, the computer icon on the top right should turn green.
+- Turn on (Bluetooth) or connect (USB) your devices.
 - Open In Heat and click connect, Intiface's phone icon should turn green and a list of connected devices should appear in the Server Status tab.
 - Open the game and enter the Practice Range, or alternatively open a Image/Video of the game in full screen.
 - In Heat should now be tracking the On-fire Meter and updating the read value to the connected devices.

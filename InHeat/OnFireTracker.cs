@@ -60,13 +60,13 @@ namespace InHeat
             pictureBox = pictureBox1;
             valuesRead = new List<float>();
             //load sample image
-            string path = "..//..//Screenshot_1.png";
-            frame = new Image<Bgr, Byte>(path);
+            //string path = "..//..//Screenshot_1.png";
+            //frame = new Image<Bgr, Byte>(path);
 
             //crop
-            frame.ROI = barRect1080p;
-            frame = frame.Copy();
-            ProcessFrame();
+            //frame.ROI = barRect1080p;
+            //frame = frame.Copy();
+            //ProcessFrame();
         }
 
         public void Update()
