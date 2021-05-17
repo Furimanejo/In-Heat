@@ -14,7 +14,7 @@ namespace OBI
     {
         ClientController clientController;
         OnFireTracker onFireTracker;
-
+        int trackingchartMaxPoints = 200;
         public GUI()
         {
             InitializeComponent();
@@ -26,12 +26,15 @@ namespace OBI
         private void trackerTimer_Tick(object sender, EventArgs e)
         {
             onFireTracker.Update();
-            //trackingChart.Series[0].Points.Add(100 * onFireTracker.lastReadValue);
-            //trackingChart.Series[1].Points.Add(100 * onFireTracker.movingAverage);
-            //if (trackingChart.Series[0].Points.Count > 300)
-            //    trackingChart.Series[0].Points.RemoveAt(0);
-            //if (trackingChart.Series[1].Points.Count > 300)
-            //    trackingChart.Series[1].Points.RemoveAt(0);
+
+
+            //chart
+            trackingChart.Series[0].Points.Add(100f * onFireTracker.lastReadValue);
+            while (trackingChart.Series[0].Points.Count > trackingchartMaxPoints)
+                trackingChart.Series[0].Points.RemoveAt(0);
+            trackingChart.Series[1].Points.Add(100f * onFireTracker.movingAverage);
+            while (trackingChart.Series[1].Points.Count > trackingchartMaxPoints)
+                trackingChart.Series[1].Points.RemoveAt(0);
         }
 
         private void trackingUpdateFrequencyBar_Scroll(object sender, EventArgs e)
@@ -44,6 +47,23 @@ namespace OBI
             onFireTracker.readsPerSecond = trackingUpdateFrequencyBar.Value;
             trackingUpdatesLabel.Text = $"Updates per second: {onFireTracker.readsPerSecond}";
             trackerTimer.Interval = 1000 / onFireTracker.readsPerSecond;
+        }
+
+        private async void connectButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await clientController.ConnectAsync();
+            }
+            catch
+            {
+                Console.WriteLine("ErrorConnecting");
+            }
+        }
+
+        private async void clientUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            await clientController.UpdateValue(onFireTracker.movingAverage);
         }
     }
 }

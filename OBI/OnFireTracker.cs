@@ -20,11 +20,11 @@ namespace OBI
     {
         PictureBox pictureBox;
         Image<Bgr, Byte> frame;
-        Rectangle barRect1080p = new Rectangle(275, 975, 210, 25);
+        Rectangle barRect1080p = new Rectangle(275, 970, 210, 50);
         
         float readValueMultiplier = 1 / .8f;
 
-        public List<float> valuesRead = new List<float>();
+        List<float> valuesRead;
         public int readsPerSecond = 30;
 
         public float lastReadValue 
@@ -40,22 +40,27 @@ namespace OBI
             get
             {
                 float sum = 0;
-                int nonZeroValueCount = 0;
-                foreach(var value in valuesRead)
+                int nonZeros = 0;
+                for(int i = valuesRead.Count -1; i >= 0; i--)
                 {
+                    var value = valuesRead[i];
+                    if (value == 0)
+                        continue;
                     sum += value;
-                    if (value > 0)
-                        nonZeroValueCount++;
+                    nonZeros++;
+                    if (valuesRead.Count - i > readsPerSecond*1.5f)
+                        break;
                 }
-                return nonZeroValueCount == 0 ? 0 : sum / nonZeroValueCount;
+                return nonZeros == 0 ? 0 : sum / nonZeros;
             }
         }
 
         public OnFireTracker(PictureBox pictureBox1)
         {
             pictureBox = pictureBox1;
+            valuesRead = new List<float>();
             //load sample image
-            string path = "..//..//Screenshot_1.png";
+            string path = "..//..//fullbar bug.png";
             frame = new Image<Bgr, Byte>(path);
 
             //crop
@@ -81,7 +86,7 @@ namespace OBI
             for(int i = 0; i < bars.Count; i++)
             {
                 var barArea = CountNonBlack(bars[i]);
-                if(barArea > 1000 && barArea < 2000 && barArea > maxArea)
+                if(barArea > 1500 && barArea < 2000 && barArea > maxArea)
                 {
                     maxArea = barArea;
                     chosenBarIndex = i;
@@ -101,9 +106,8 @@ namespace OBI
             {
                 UpdatePictureBox(frame.CopyBlank().ToBitmap());
             }
-
             valuesRead.Add(value);
-            while (valuesRead.Count > readsPerSecond * 4);
+            while (valuesRead.Count > readsPerSecond * 5f)
                 valuesRead.RemoveAt(0);
         }
 
@@ -208,7 +212,7 @@ namespace OBI
 
         int CountCyanPixels(Image<Bgr, Byte> barImage)
         {
-            var cyanPixels = barImage.InRange(new Bgr(220, 220, 0), new Bgr(255, 255, 255)).CountNonzero()[0];
+            var cyanPixels = barImage.InRange(new Bgr(240, 200, 0), new Bgr(255, 255, 255)).CountNonzero()[0];
             return cyanPixels;
         }
 
