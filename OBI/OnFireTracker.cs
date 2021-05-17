@@ -60,7 +60,7 @@ namespace OBI
             pictureBox = pictureBox1;
             valuesRead = new List<float>();
             //load sample image
-            string path = "..//..//fullbar bug.png";
+            string path = "..//..//Screenshot_1.png";
             frame = new Image<Bgr, Byte>(path);
 
             //crop
