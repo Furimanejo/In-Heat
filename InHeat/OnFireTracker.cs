@@ -20,7 +20,7 @@ namespace InHeat
     {
         PictureBox pictureBox;
         Image<Bgr, Byte> frame;
-        Rectangle barRect1080p = new Rectangle(275, 970, 210, 50);
+        Rectangle barRect1080p = new Rectangle(275, 960, 220, 60);
         
         float readValueMultiplier = 1 / .8f;
 
@@ -59,20 +59,52 @@ namespace InHeat
         {
             pictureBox = pictureBox1;
             valuesRead = new List<float>();
-            //load sample image
-            //string path = "..//..//Screenshot_1.png";
-            //frame = new Image<Bgr, Byte>(path);
-
-            //crop
-            //frame.ROI = barRect1080p;
-            //frame = frame.Copy();
-            //ProcessFrame();
         }
 
         public void Update()
         {
             CaptureFrame();
-            ProcessFrame();
+            //ProcessFrame();
+            WhiteDetection();
+        }
+
+        private void WhiteDetection()
+        {
+            var frameCopy = frame.Copy();
+
+            var mean = CvInvoke.Mean(frameCopy); // B G R 
+            var meanB = (mean.V0 / 255);
+            var meanG = (mean.V1 / 255);
+            var meanR = (mean.V2 / 255);
+
+            var minBlue = 220 + 35 * meanB;
+            var minGreen = 150 + 105 * (meanG / 255);
+            var maxRed = 253;
+            var mask = frameCopy.InRange(new Bgr(minBlue, minGreen, 0), new Bgr(255, 255, maxRed));
+
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(mask, contours, null,
+                Emgu.CV.CvEnum.RetrType.List,
+                Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+
+            if(contours.Size > 0)
+            {
+                var minDistFromLowerLeft = 9999;
+                int chosenContourIndex = -1;
+                for (int i = 0; i < contours.Size; i++)
+                {
+                    var rect = CvInvoke.BoundingRectangle(contours[i]);
+                    var distFromLowerLeft = rect.X - (rect.Y + rect.Height);
+                    if (distFromLowerLeft < minDistFromLowerLeft)
+                    {
+                        minDistFromLowerLeft = distFromLowerLeft;
+                        chosenContourIndex = i;
+                    }
+                }
+                CvInvoke.DrawContours(frameCopy, contours, chosenContourIndex, new MCvScalar(0, 0, 255), 2);
+            }
+
+            pictureBox.Image = frameCopy.ToBitmap();
         }
 
         void ProcessFrame()
