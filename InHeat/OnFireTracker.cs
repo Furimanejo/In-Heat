@@ -21,8 +21,6 @@ namespace InHeat
         PictureBox pictureBox;
         Image<Bgr, Byte> frame;
         Rectangle barRect1080p = new Rectangle(275, 960, 220, 60);
-        
-        float readValueMultiplier = 1 / .8f;
 
         List<float> valuesRead;
         public int readsPerSecond = 30;
@@ -39,19 +37,24 @@ namespace InHeat
         {
             get
             {
-                float sum = 0;
-                int nonZeros = 0;
-                for(int i = valuesRead.Count -1; i >= 0; i--)
+                float pointsToRead = (readsPerSecond * 1f);
+                if (pointsToRead > valuesRead.Count)
+                    pointsToRead = valuesRead.Count;
+                List<float> points = new List<float>();
+                for (int i = valuesRead.Count - 1; i > 0; i--)
                 {
                     var value = valuesRead[i];
                     if (value == 0)
                         continue;
-                    sum += value;
-                    nonZeros++;
-                    if (valuesRead.Count - i > readsPerSecond*1.5f)
+                    points.Add(value);
+                    if (points.Count > pointsToRead)
                         break;
                 }
-                return nonZeros == 0 ? 0 : sum / nonZeros;
+                if (points.Count == 0)
+                    return 0;
+                points = points.OrderBy(o => o).ToList();
+                var index = (int)Math.Floor(.8*(points.Count - 1));
+                return points[index];
             }
         }
 
@@ -64,194 +67,82 @@ namespace InHeat
         public void Update()
         {
             CaptureFrame();
-            //ProcessFrame();
-            WhiteDetection();
-        }
-
-        private void WhiteDetection()
-        {
-            var frameCopy = frame.Copy();
-
-            var mean = CvInvoke.Mean(frameCopy); // B G R 
-            var meanB = (mean.V0 / 255);
-            var meanG = (mean.V1 / 255);
-            var meanR = (mean.V2 / 255);
-
-            var minBlue = 220 + 35 * meanB;
-            var minGreen = 150 + 105 * (meanG / 255);
-            var maxRed = 253;
-            var mask = frameCopy.InRange(new Bgr(minBlue, minGreen, 0), new Bgr(255, 255, maxRed));
-
-            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
-            CvInvoke.FindContours(mask, contours, null,
-                Emgu.CV.CvEnum.RetrType.List,
-                Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
-
-            if(contours.Size > 0)
-            {
-                var minDistFromLowerLeft = 9999;
-                int chosenContourIndex = -1;
-                for (int i = 0; i < contours.Size; i++)
-                {
-                    var rect = CvInvoke.BoundingRectangle(contours[i]);
-                    var distFromLowerLeft = rect.X - (rect.Y + rect.Height);
-                    if (distFromLowerLeft < minDistFromLowerLeft)
-                    {
-                        minDistFromLowerLeft = distFromLowerLeft;
-                        chosenContourIndex = i;
-                    }
-                }
-                CvInvoke.DrawContours(frameCopy, contours, chosenContourIndex, new MCvScalar(0, 0, 255), 2);
-            }
-
-            pictureBox.Image = frameCopy.ToBitmap();
-        }
-
-        void ProcessFrame()
-        {
-            var bars = new List<Image<Bgr, Byte>>();
-            bars.Add(DetectBarByContours());
-            bars.Add(DetectBarByHorizontalLines());
-
-            int maxArea = 0;
-            int chosenBarIndex = -1;
-            for(int i = 0; i < bars.Count; i++)
-            {
-                var barArea = CountNonBlack(bars[i]);
-                if(barArea > 1500 && barArea < 2000 && barArea > maxArea)
-                {
-                    maxArea = barArea;
-                    chosenBarIndex = i;
-                }
-            }
-            // one of the bars found is valid
-            float value = 0;
-            if(chosenBarIndex > -1)
-            {
-                var cyanPixels = CountCyanPixels(bars[chosenBarIndex]);
-                value = (float) cyanPixels / maxArea;
-                value *= readValueMultiplier;
-                value = value > 1 ? 1 : value;
-                UpdatePictureBox(bars[chosenBarIndex].ToBitmap());
-            }
-            else
-            {
-                UpdatePictureBox(frame.CopyBlank().ToBitmap());
-            }
+            var value = CyanDetection();
+            value = (value - 0.05f);
+            value /= 0.85f;
+            value = value < 0 ? 0 : value;
+            value = value > 1 ? 1 : value;
             valuesRead.Add(value);
             while (valuesRead.Count > readsPerSecond * 5f)
                 valuesRead.RemoveAt(0);
         }
 
-        UMat FindEdgesInFrame()
+        private float CyanDetection()
         {
-            //convert frame to gray
-            var tempGray = new UMat();
-            CvInvoke.CvtColor(frame, tempGray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
-            //CvInvoke.GaussianBlur(tempGray, tempGray, new Size(3, 3), 15, 15);
+            float value = 0;
+            var frameCopy = frame.Copy();
+            CvInvoke.GaussianBlur(frameCopy, frameCopy, new Size(3, 3), 15, 15);
 
-            //canny edge detection
-            var mean = CvInvoke.Mean(tempGray).V0;
-            var mixThreshold = .8f * mean;
-            var maxThreshold = 1.3 * mean;
-            CvInvoke.Canny(tempGray, tempGray, mixThreshold, maxThreshold);
-            return tempGray;
+            var mean = CvInvoke.Mean(frameCopy); // B G R 
+            var meanB = (mean.V0 / 255);
+            var meanG = (mean.V1 / 255);
+            var meanR = (mean.V2 / 255);
+            var minBlue = 230 + 25 * meanB;
+            var minGreen = 220 + 35 * meanG;
+            var maxRed = 130 + 85 * meanR;
+
+            var mask = frameCopy.InRange(new Bgr(minBlue, minGreen, 0), new Bgr(255, 255, maxRed));
+
+            Mat element = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, 
+                new Size(3, 3), new Point(-1, -1));
+
+            CvInvoke.Dilate(mask, mask, element, new Point(-1,- 1), 2, 
+                Emgu.CV.CvEnum.BorderType.Constant, new MCvScalar(0, 0, 0));  
+
+            VectorOfVectorOfPoint cyanContours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(mask, cyanContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+
+            if (cyanContours.Size > 0)
+            {
+                var index = FindContourClosestToBottomRight(cyanContours);
+                CvInvoke.DrawContours(frameCopy, cyanContours, index, new MCvScalar(0, 0, 255), 2);
+                value = CvInvoke.BoundingRectangle(cyanContours[index]).Right;
+                value /= barRect1080p.Width;
+            }
+            else
+            {
+                //var WhiteMask = frame.InRange(new Bgr(255, 255, 255), new Bgr(255, 255, 255));
+                //VectorOfVectorOfPoint WhiteContours = new VectorOfVectorOfPoint();
+                //CvInvoke.FindContours(WhiteMask, WhiteContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+                //var index = FindContourClosestToBottomRight(WhiteContours);
+                //if(index > -1)
+                //{
+                //    CvInvoke.DrawContours(frameCopy, WhiteContours, index, new MCvScalar(0, 0, 255), 2);
+                //    value = CvInvoke.BoundingRectangle(WhiteContours[index]).Right;
+                //    value /= barRect1080p.Width;
+                //    if (value < .7f)
+                //        value = 0;
+                //}
+            }
+            pictureBox.Image = frameCopy.ToBitmap();
+            return value;
         }
 
-        Image<Bgr, Byte> DetectBarByContours()
+        int FindContourClosestToBottomRight(VectorOfVectorOfPoint contours)
         {
-            var edges = FindEdgesInFrame();
-
-            //find contours from edges
-            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
-            CvInvoke.FindContours(edges, contours, null,
-                Emgu.CV.CvEnum.RetrType.List,
-                Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
-
-            //find contour of biggest width
-            var index = -1;
-            var maxWidth = 0;
+            int chosenContourIndex = -1;            
+            var minDistFromLowerLeft = 9999;
             for (int i = 0; i < contours.Size; i++)
             {
                 var rect = CvInvoke.BoundingRectangle(contours[i]);
-                if (rect.Width > maxWidth && rect.Width > .7f * barRect1080p.Width)
+                var distFromLowerLeft = rect.X - (rect.Y + rect.Height);
+                if (distFromLowerLeft < minDistFromLowerLeft)
                 {
-                    maxWidth = rect.Width;
-                    index = i;
+                    minDistFromLowerLeft = distFromLowerLeft;
+                    chosenContourIndex = i;
                 }
             }
-
-            var barMask = frame.CopyBlank();
-            if (index > -1)
-            {
-                // fill the contour found with white pixels
-                VectorOfPoint hull = new VectorOfPoint();
-                CvInvoke.ConvexHull(contours[index], hull);
-                CvInvoke.FillConvexPoly(barMask, hull, 
-                    new MCvScalar(255, 255, 255), 
-                    Emgu.CV.CvEnum.LineType.FourConnected);
-            }
-
-            CvInvoke.BitwiseAnd(frame, barMask, barMask);
-            return barMask;
-        }
-
-        Image<Bgr, Byte> DetectBarByHorizontalLines()
-        {
-            var tempGray = FindEdgesInFrame();
-            
-            LineSegment2D[] houghLines = CvInvoke.HoughLinesP(tempGray, .5, Math.PI/180, 10, .6* barRect1080p.Width, 10);
-            List<LineSegment2D> possibleBarLines = new List<LineSegment2D>();
-            int x1 = 0;
-            int x2 = 0;
-            foreach (LineSegment2D line in houghLines)
-            {
-                LineSegment2D horizontalLine = new LineSegment2D(new Point(0, 0), new Point(10, 0));
-                var angle = line.GetExteriorAngleDegree(horizontalLine);
-                if (angle > 0)
-                {
-                    possibleBarLines.Add(line);
-                    if (line.P1.X > x1)
-                        x1 = line.P1.X;
-                    if (line.P2.X > x2)
-                        x2 = line.P2.X;
-                    CvInvoke.Line(tempGray, line.P1, line.P2, new MCvScalar(0,255,0), 1);
-                }
-            }
-
-            var barMask = frame.CopyBlank();
-            // not enough lines detected to make a bar
-            if(possibleBarLines.Count < 2)
-                return barMask;
-
-            // get bottom 2 lines, ordering by P1.Y value
-            possibleBarLines = possibleBarLines.OrderBy(o => o.P1.Y).ToList();
-            LineSegment2D line1 = possibleBarLines[possibleBarLines.Count - 2];
-            LineSegment2D line2 = possibleBarLines[possibleBarLines.Count - 1];
-            Point[] points = new Point[] { 
-                new Point(x1, line1.P1.Y),
-                new Point(x2, line1.P2.Y),
-                new Point(x2, line2.P2.Y),
-                new Point(x1, line2.P1.Y) };
-            VectorOfPoint barPoints = new VectorOfPoint(points);
-            CvInvoke.FillConvexPoly(barMask, barPoints, new MCvScalar(255, 255, 255), Emgu.CV.CvEnum.LineType.FourConnected);
-
-            //return bar to colors from original frame
-            CvInvoke.BitwiseAnd(frame, barMask, barMask);
-
-            return barMask;
-        }
-
-        int CountCyanPixels(Image<Bgr, Byte> barImage)
-        {
-            var cyanPixels = barImage.InRange(new Bgr(240, 200, 0), new Bgr(255, 255, 255)).CountNonzero()[0];
-            return cyanPixels;
-        }
-
-        int CountNonBlack(Image<Bgr, Byte> barImage)
-        {
-            var totalpixels = barImage.InRange(new Bgr(1, 1, 1), new Bgr(255, 255, 255)).CountNonzero()[0];
-            return totalpixels;
+            return chosenContourIndex;
         }
 
         void CaptureFrame()
@@ -260,11 +151,6 @@ namespace InHeat
             Graphics captureGraphics = Graphics.FromImage(captureBitmap);
             captureGraphics.CopyFromScreen(barRect1080p.Left, barRect1080p.Top, 0, 0, barRect1080p.Size);
             frame = captureBitmap.ToImage<Bgr, Byte>();
-        }
-
-        void UpdatePictureBox(Bitmap bmp)
-        {
-            pictureBox.Image = bmp;
         }
     }
 }
