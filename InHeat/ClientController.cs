@@ -18,7 +18,7 @@ namespace InHeat
             Console.WriteLine("Initializing Client Controller");
             connector = new ButtplugWebsocketConnectorOptions(new Uri("ws://localhost:12345/buttplug"));
             client = new ButtplugClient("In Heat");
-            client.DeviceAdded += OnDeviceAdded;
+            //client.DeviceAdded += OnDeviceAdded;
             ButtplugFFILog.LogMessage += (obj, msg) => Console.WriteLine(msg);
             ButtplugFFILog.SetLogOptions(ButtplugLogLevel.Debug, false);
         }
@@ -41,17 +41,12 @@ namespace InHeat
             await client.StartScanningAsync();
         }
 
-        static void OnDeviceAdded(object sender, DeviceAddedEventArgs args)
-        {
-            //Console.WriteLine($"Device ${args.Device.Name} connected");
-        }
-
         public async Task UpdateValue(float value)
         {
             foreach(var device in client.Devices)
             {
-                await device.SendVibrateCmd(value);
-                Console.WriteLine($"sending cmd { value} to {device.Name}");
+                if(device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.VibrateCmd))
+                    await device.SendVibrateCmd(value);
             }
         }
     }
