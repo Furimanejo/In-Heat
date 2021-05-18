@@ -12,12 +12,7 @@ In Heat is a Buttplug client and must connect to a Buttplug server (https://inti
 
 #### Tracking The On-fire Meter
 
-In Heat uses Emgu CV, a C# image processing library.
-
-The basic computer vision flow is: 
-- Screenshot the user's screen around the On-fire Meter area.
-- Locate the actual bar and create a mask of it.
-- Use the mask to count the number of cyan and white pixels in the bar.
+In Heat uses Emgu CV, a C# image processing library, to locate the brightest cyan spot on the bar area, and calculate the distance from the capture box origin;
 
 ## Making It Run
 
