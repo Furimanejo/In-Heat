@@ -14,7 +14,8 @@ namespace InHeat
     {
         ClientController clientController;
         OnFireTracker onFireTracker;
-        int trackingchartMaxPoints = 200;
+        int trackingchartMaxPoints = 100;
+
         public GUI()
         {
             InitializeComponent();
@@ -26,7 +27,6 @@ namespace InHeat
         private void trackerTimer_Tick(object sender, EventArgs e)
         {
             onFireTracker.Update();
-
 
             //chart
             trackingChart.Series[0].Points.Add(100f * onFireTracker.lastReadValue);
@@ -55,15 +55,27 @@ namespace InHeat
             {
                 await clientController.ConnectAsync();
             }
-            catch
-            {
-                Console.WriteLine("ErrorConnecting");
-            }
+            catch { Console.WriteLine("Error Connecting"); }
         }
 
         private async void clientUpdateTimer_Tick(object sender, EventArgs e)
         {
-            await clientController.UpdateValue(onFireTracker.movingAverage);
+            float value = 0;
+            if (UpdateDevicesCheckbox.Checked)
+            {
+                value = onFireTracker.movingAverage;
+                // interpolation
+                value =  value * (float)(maxIntensity.Value - minIntensity.Value)/100;
+                value += (float) minIntensity.Value / 100;
+                // clamp
+                value = value > 0 ? value : 0;
+                value = value < 1 ? value : 1; 
+            }
+            try
+            {
+                await clientController.UpdateValue(value);
+            }
+            catch{ Console.WriteLine("Error Update Device Value"); }
         }
     }
 }
