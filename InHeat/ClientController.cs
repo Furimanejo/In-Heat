@@ -17,7 +17,7 @@ namespace InHeat
         {
             Console.WriteLine("Initializing Client Controller");
             connector = new ButtplugWebsocketConnectorOptions(new Uri("ws://localhost:12345/buttplug"));
-            client = new ButtplugClient("OBI");
+            client = new ButtplugClient("In Heat");
             client.DeviceAdded += OnDeviceAdded;
             ButtplugFFILog.LogMessage += (obj, msg) => Console.WriteLine(msg);
             ButtplugFFILog.SetLogOptions(ButtplugLogLevel.Debug, false);
