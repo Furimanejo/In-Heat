@@ -23,7 +23,7 @@ Here's a list of suported devices: https://iostindex.com/?filter0ButtplugSupport
 ## How It Works
 
 #### Controling Devices
-In Heat uses the [Buttplug library] (https://buttplug.io/). Buttplug is an open-source standards and software project for controlling intimate hardware, including sex toys, fucking machines, and more.
+In Heat uses the [Buttplug library](https://buttplug.io/). Buttplug is an open-source standards and software project for controlling intimate hardware, including sex toys, fucking machines, and more.
 
 In Heat is a Buttplug client and must connect to a Buttplug server to work.
 
