@@ -20,7 +20,7 @@ namespace InHeat
     {
         PictureBox pictureBox;
         Image<Bgr, Byte> frame;
-        Rectangle barRect1080p = new Rectangle(275, 960, 220, 60);
+        Rectangle barRect1080p = new Rectangle(275, 965, 220, 55);
 
         List<float> valuesRead;
         public int readsPerSecond = 30;
@@ -40,20 +40,22 @@ namespace InHeat
                 float pointsToRead = (readsPerSecond * 1f);
                 if (pointsToRead > valuesRead.Count)
                     pointsToRead = valuesRead.Count;
+                int zeros = 0;
                 List<float> points = new List<float>();
                 for (int i = valuesRead.Count - 1; i > 0; i--)
                 {
                     var value = valuesRead[i];
                     if (value == 0)
-                        continue;
+                        zeros++;
+                    //continue;
                     points.Add(value);
-                    if (points.Count > pointsToRead)
+                    if (points.Count > pointsToRead + zeros)
                         break;
                 }
                 if (points.Count == 0)
                     return 0;
                 points = points.OrderBy(o => o).ToList();
-                var index = (int)Math.Floor(.8*(points.Count - 1));
+                var index = (int)Math.Floor(.90f*(points.Count - 1));
                 return points[index];
             }
         }
