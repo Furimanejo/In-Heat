@@ -45,6 +45,8 @@ namespace InHeat
         {
             foreach(var device in client.Devices)
             {
+                if (device.Name.Contains("Gamepad"))
+                    await device.SendStopDeviceCmd();
                 if(device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.VibrateCmd))
                     await device.SendVibrateCmd(value);
             }
