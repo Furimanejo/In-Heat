@@ -137,14 +137,26 @@ namespace InHeat
                 overlay.Hide();
         }
 
-        private void maxIntensity_ValueChanged(object sender, EventArgs e)
+        private async void maxIntensity_ValueChanged(object sender, EventArgs e)
         {
-            
+            await ForceDeviceValue((float)maxIntensity.Value / 100f, 700);
         }
 
-        private void minIntensity_ValueChanged(object sender, EventArgs e)
+        private async void minIntensity_ValueChanged(object sender, EventArgs e)
         {
+            await ForceDeviceValue((float)minIntensity.Value / 100f, 700);
+        }
 
+        async Task ForceDeviceValue(float value, int miliseconds)
+        {
+            clientUpdateTimer.Enabled = false;
+            try
+            {
+                await clientController.UpdateValue(value);
+                await Task.Delay(miliseconds);
+            }
+            catch { }
+            clientUpdateTimer.Enabled = true;
         }
     }
 }
