@@ -20,7 +20,7 @@ namespace InHeat
     {
         PictureBox pictureBox;
         Image<Bgr, Byte> frame;
-        Rectangle barRect1080p = new Rectangle(275, 965, 220, 55);
+        public Rectangle barRect1080p = new Rectangle(275, 965, 220, 55);
 
         List<float> valuesRead;
         public int readsPerSecond = 30;

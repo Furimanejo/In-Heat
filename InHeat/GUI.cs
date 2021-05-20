@@ -12,15 +12,16 @@ namespace InHeat
 {
     public partial class GUI : Form
     {
+        Overlay overlay;
         ClientController clientController;
         OnFireTracker onFireTracker;
-        int trackingchartMaxPoints = 100;
 
         public GUI()
         {
             InitializeComponent();
             clientController = new ClientController();
             onFireTracker = new OnFireTracker(TrackerPictureBox);
+            overlay = new Overlay(onFireTracker.barRect1080p);
             UpdateTrackingFrequency();
         }
 
@@ -29,12 +30,9 @@ namespace InHeat
             onFireTracker.Update();
 
             //chart
-            trackingChart.Series[0].Points.Add(100f * onFireTracker.lastReadValue);
-            while (trackingChart.Series[0].Points.Count > trackingchartMaxPoints)
-                trackingChart.Series[0].Points.RemoveAt(0);
-            trackingChart.Series[1].Points.Add(100f * onFireTracker.movingAverage);
-            while (trackingChart.Series[1].Points.Count > trackingchartMaxPoints)
-                trackingChart.Series[1].Points.RemoveAt(0);
+            var raw = 100f * onFireTracker.lastReadValue;
+            var filtered = 100f * onFireTracker.movingAverage;
+            overlay.AddPointsToChart(raw, filtered);
         }
 
         private void trackingUpdateFrequencyBar_Scroll(object sender, EventArgs e)
@@ -76,6 +74,14 @@ namespace InHeat
                 await clientController.UpdateValue(value);
             }
             catch{ Console.WriteLine("Error Update Device Value"); }
+        }
+
+        private void overlayCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (overlayCheckBox.Checked)
+                overlay.Show();
+            else
+                overlay.Hide();
         }
     }
 }

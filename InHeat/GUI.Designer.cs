@@ -29,16 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.TrackerPictureBox = new System.Windows.Forms.PictureBox();
             this.trackerTimer = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.trackingUpdateFrequencyBar = new System.Windows.Forms.TrackBar();
             this.trackingUpdatesLabel = new System.Windows.Forms.Label();
-            this.trackingChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.connectButton = new System.Windows.Forms.Button();
             this.clientUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateDevicesCheckbox = new System.Windows.Forms.CheckBox();
@@ -46,9 +41,9 @@
             this.maxIntensity = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.overlayCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.TrackerPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackingUpdateFrequencyBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackingChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minIntensity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxIntensity)).BeginInit();
             this.SuspendLayout();
@@ -104,45 +99,6 @@
             this.trackingUpdatesLabel.TabIndex = 3;
             this.trackingUpdatesLabel.Text = "Updates per second:\r\n";
             // 
-            // trackingChart
-            // 
-            chartArea3.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea3.AxisX.LabelStyle.Enabled = false;
-            chartArea3.AxisX2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea3.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea3.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea3.AxisY2.Maximum = 100D;
-            chartArea3.AxisY2.Minimum = 0D;
-            chartArea3.Name = "ChartArea1";
-            this.trackingChart.ChartAreas.Add(chartArea3);
-            legend3.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Row;
-            legend3.Name = "Legend1";
-            legend3.Position.Auto = false;
-            legend3.Position.Height = 5F;
-            legend3.Position.Width = 100F;
-            legend3.Position.Y = 95F;
-            this.trackingChart.Legends.Add(legend3);
-            this.trackingChart.Location = new System.Drawing.Point(12, 175);
-            this.trackingChart.Name = "trackingChart";
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series5.Color = System.Drawing.Color.Blue;
-            series5.Legend = "Legend1";
-            series5.Name = "Raw Values";
-            series5.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
-            series6.BorderWidth = 5;
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series6.Color = System.Drawing.Color.Fuchsia;
-            series6.Legend = "Legend1";
-            series6.Name = "Filtered Values";
-            series6.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
-            this.trackingChart.Series.Add(series5);
-            this.trackingChart.Series.Add(series6);
-            this.trackingChart.Size = new System.Drawing.Size(438, 245);
-            this.trackingChart.TabIndex = 4;
-            this.trackingChart.Text = "chart1";
-            // 
             // connectButton
             // 
             this.connectButton.Location = new System.Drawing.Point(13, 113);
@@ -163,7 +119,7 @@
             // 
             this.UpdateDevicesCheckbox.AutoSize = true;
             this.UpdateDevicesCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpdateDevicesCheckbox.Location = new System.Drawing.Point(12, 426);
+            this.UpdateDevicesCheckbox.Location = new System.Drawing.Point(12, 242);
             this.UpdateDevicesCheckbox.Name = "UpdateDevicesCheckbox";
             this.UpdateDevicesCheckbox.Size = new System.Drawing.Size(301, 35);
             this.UpdateDevicesCheckbox.TabIndex = 6;
@@ -177,7 +133,7 @@
             0,
             0,
             0});
-            this.minIntensity.Location = new System.Drawing.Point(299, 467);
+            this.minIntensity.Location = new System.Drawing.Point(300, 186);
             this.minIntensity.Maximum = new decimal(new int[] {
             99,
             0,
@@ -199,7 +155,7 @@
             0,
             0,
             0});
-            this.maxIntensity.Location = new System.Drawing.Point(299, 495);
+            this.maxIntensity.Location = new System.Drawing.Point(300, 214);
             this.maxIntensity.Minimum = new decimal(new int[] {
             100,
             0,
@@ -218,7 +174,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(8, 469);
+            this.label2.Location = new System.Drawing.Point(9, 188);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(242, 20);
             this.label2.TabIndex = 9;
@@ -228,24 +184,36 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(8, 497);
+            this.label3.Location = new System.Drawing.Point(9, 216);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(260, 20);
             this.label3.TabIndex = 10;
             this.label3.Text = "Device intensity(%) at 100% fire: ";
+            // 
+            // overlayCheckBox
+            // 
+            this.overlayCheckBox.AutoSize = true;
+            this.overlayCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.overlayCheckBox.Location = new System.Drawing.Point(12, 283);
+            this.overlayCheckBox.Name = "overlayCheckBox";
+            this.overlayCheckBox.Size = new System.Drawing.Size(199, 35);
+            this.overlayCheckBox.TabIndex = 11;
+            this.overlayCheckBox.Text = "Show overlay";
+            this.overlayCheckBox.UseVisualStyleBackColor = true;
+            this.overlayCheckBox.CheckedChanged += new System.EventHandler(this.overlayCheckBox_CheckedChanged);
             // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(462, 532);
+            this.Controls.Add(this.overlayCheckBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.maxIntensity);
             this.Controls.Add(this.minIntensity);
             this.Controls.Add(this.UpdateDevicesCheckbox);
             this.Controls.Add(this.connectButton);
-            this.Controls.Add(this.trackingChart);
             this.Controls.Add(this.trackingUpdatesLabel);
             this.Controls.Add(this.trackingUpdateFrequencyBar);
             this.Controls.Add(this.label1);
@@ -254,7 +222,6 @@
             this.Text = "In Heat";
             ((System.ComponentModel.ISupportInitialize)(this.TrackerPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackingUpdateFrequencyBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackingChart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minIntensity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxIntensity)).EndInit();
             this.ResumeLayout(false);
@@ -269,7 +236,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TrackBar trackingUpdateFrequencyBar;
         private System.Windows.Forms.Label trackingUpdatesLabel;
-        private System.Windows.Forms.DataVisualization.Charting.Chart trackingChart;
         private System.Windows.Forms.Button connectButton;
         private System.Windows.Forms.Timer clientUpdateTimer;
         private System.Windows.Forms.CheckBox UpdateDevicesCheckbox;
@@ -277,6 +243,7 @@
         private System.Windows.Forms.NumericUpDown maxIntensity;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox overlayCheckBox;
     }
 }
 
