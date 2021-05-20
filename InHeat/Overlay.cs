@@ -19,32 +19,68 @@ namespace InHeat
         [DllImport("user32.dll", SetLastError = true)]
         static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
-        Rectangle position;
         int trackingchartMaxPoints = 80;
 
         public Overlay(Rectangle _position)
         {
-            InitializeComponent();
-            position = _position;
+            InitializeComponent();        
+
+            Rectangle rect = ControlRectangle(trackingChart);
+
+            this.Size = Screen.PrimaryScreen.Bounds.Size;
+            
+            ScaleControl(trackingChart, rect);
+        }
+
+        Rectangle ControlRectangle(Control control)
+        {
+            return new Rectangle(control.Location, control.Size);
+        }
+
+        void ScaleControl(Control control, Rectangle rect)
+        {
+            var ratioX = Size.Width / 1920f;
+            var ratioY = Size.Height / 1080f;
+
+            var newLocationX = ratioX * rect.Location.X;
+            var newLocationY = ratioY * rect.Location.Y;
+            var newWidth = ratioX * rect.Width;
+            var newHeight = ratioY * rect.Height;
+
+            var newLocation = new Point((int)newLocationX, (int)newLocationY);
+            var newSize = new Size((int)newWidth, (int)newHeight);
+
+            control.Location = newLocation;
+            control.Size = newSize;
         }
 
         private void Overlay_Load(object sender, EventArgs e)
         {
-            //this.TopMost = true;
-
             //make overlay background transparent
             BackColor = Color.Wheat;
             TransparencyKey = Color.Wheat;
-            //trackingChart.BackColor = Color.Wheat;
-            //trackingChart.ChartAreas[0].BackColor = Color.Wheat;
+            trackingChart.BackColor = Color.Wheat;
+            trackingChart.ChartAreas[0].BackColor = Color.Wheat;
+            trackingChart.Series[0].Color = Color.Transparent;
 
             // make overlay click-through
             int initialStyle = GetWindowLong(this.Handle, -20);
             SetWindowLong(this.Handle, -20, initialStyle | 0x80000 | 0x20);
 
-            //position overlay
-            this.Location = new Point(0,0);
-            this.Size = Screen.PrimaryScreen.Bounds.Size;
+            this.TopMost = true;
+        }
+
+
+        [DllImport("User32.dll")]
+        private static extern IntPtr GetDC(IntPtr hWnd);
+        private void AdjustClientWidthToDPIScale()
+        {
+            double dpiKoef = Graphics.FromHdc(GetDC(IntPtr.Zero)).DpiX / 96f;
+
+            int compansatedWidth = (int)(ClientSize.Width * dpiKoef);
+
+
+            this.ClientSize = new Size(compansatedWidth, this.ClientSize.Height);
         }
 
         public void AddPointsToChart(float raw, float filtered)
