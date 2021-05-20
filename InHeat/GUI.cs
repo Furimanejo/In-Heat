@@ -22,6 +22,7 @@ namespace InHeat
             clientController = new ClientController();
             onFireTracker = new OnFireTracker(TrackerPictureBox);
             overlay = new Overlay(onFireTracker.barRect1080p);
+            overlay.Show();
             UpdateTrackingFrequency();
         }
 

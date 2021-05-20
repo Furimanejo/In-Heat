@@ -30,22 +30,21 @@ namespace InHeat
 
         private void Overlay_Load(object sender, EventArgs e)
         {
-            this.TopMost = true;
+            //this.TopMost = true;
 
             //make overlay background transparent
             BackColor = Color.Wheat;
             TransparencyKey = Color.Wheat;
-            trackingChart.BackColor = Color.Wheat;
-            trackingChart.ChartAreas[0].BackColor = Color.Wheat;
+            //trackingChart.BackColor = Color.Wheat;
+            //trackingChart.ChartAreas[0].BackColor = Color.Wheat;
 
             // make overlay click-through
             int initialStyle = GetWindowLong(this.Handle, -20);
             SetWindowLong(this.Handle, -20, initialStyle | 0x80000 | 0x20);
 
             //position overlay
-            this.Location = new Point(
-                (int)(position.X / 1.31f), 
-                (int)(position.Bottom / 1.254f));
+            this.Location = new Point(0,0);
+            this.Size = Screen.PrimaryScreen.Bounds.Size;
         }
 
         public void AddPointsToChart(float raw, float filtered)
@@ -53,17 +52,17 @@ namespace InHeat
             var rawSeries = trackingChart.Series[0].Points;
             var filteredSeries = trackingChart.Series[1].Points;
 
-            // this avoid some weird behavior in the chart, trust me
-            raw += .01f; 
+            //// this avoid some weird behavior in the chart, trust me
+            raw += .01f;
             filtered += .01f;
 
-            foreach(var point in rawSeries)
+            foreach (var point in rawSeries)
                 point.YValues[0]--;
             rawSeries.AddXY(raw, rawSeries.Count);
             while (rawSeries.Count > trackingchartMaxPoints)
                 rawSeries.RemoveAt(0);
 
-            foreach(var point in filteredSeries)
+            foreach (var point in filteredSeries)
                 point.YValues[0]--;
             filteredSeries.AddXY(filtered, filteredSeries.Count);
             while (filteredSeries.Count > trackingchartMaxPoints)

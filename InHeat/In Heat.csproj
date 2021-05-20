@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DD4FE621-2D70-4074-9035-6FBA657AFB97}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>InHeat</RootNamespace>
     <AssemblyName>InHeat</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
