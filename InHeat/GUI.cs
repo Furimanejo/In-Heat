@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace InHeat
 {
@@ -20,10 +22,63 @@ namespace InHeat
         {
             InitializeComponent();
             clientController = new ClientController();
-            onFireTracker = new OnFireTracker(TrackerPictureBox);
-            overlay = new Overlay(onFireTracker.barRect1080p);
+            overlay = new Overlay();
+
+            var trackRect = ScaleRectangleToResolution(overlay.trackingRect);
+            onFireTracker = new OnFireTracker(trackRect, TrackerPictureBox);
             //overlay.Show();
             UpdateTrackingFrequency();
+        }
+
+        Rectangle ScaleRectangleToResolution(Rectangle rect)
+        {
+            var ScreenRect = Screen.PrimaryScreen.Bounds;
+            var scaleFactor = GetWindowsScreenScalingFactor(false);
+
+            var ratioX = scaleFactor * ScreenRect.Width / 1920f;
+            var ratioY = scaleFactor * ScreenRect.Height / 1080f;
+
+            var newLocationX = ratioX * rect.Location.X;
+            var newLocationY = ratioY * rect.Location.Y;
+            var newWidth = ratioX * rect.Width;
+            var newHeight = ratioY * rect.Height;
+
+            var newLocation = new Point((int)newLocationX, (int)newLocationY);
+            var newSize = new Size((int)newWidth, (int)newHeight);
+
+            return new Rectangle(newLocation, newSize);
+        }
+
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        public static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
+
+        public enum DeviceCap
+        {
+            VERTRES = 10,
+            DESKTOPVERTRES = 117
+        }
+
+        public static double GetWindowsScreenScalingFactor(bool percentage = true)
+        {
+            //Create Graphics object from the current windows handle
+            Graphics GraphicsObject = Graphics.FromHwnd(IntPtr.Zero);
+            //Get Handle to the device context associated with this Graphics object
+            IntPtr DeviceContextHandle = GraphicsObject.GetHdc();
+            //Call GetDeviceCaps with the Handle to retrieve the Screen Height
+            int LogicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.VERTRES);
+            int PhysicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.DESKTOPVERTRES);
+            //Divide the Screen Heights to get the scaling factor and round it to two decimals
+            double ScreenScalingFactor = Math.Round(PhysicalScreenHeight / (double)LogicalScreenHeight, 2);
+            //If requested as percentage - convert it
+            if (percentage)
+            {
+                ScreenScalingFactor *= 100.0;
+            }
+            //Release the Handle and Dispose of the GraphicsObject object
+            GraphicsObject.ReleaseHdc(DeviceContextHandle);
+            GraphicsObject.Dispose();
+            //Return the Scaling Factor
+            return ScreenScalingFactor;
         }
 
         private void trackerTimer_Tick(object sender, EventArgs e)

@@ -20,7 +20,7 @@ namespace InHeat
     {
         PictureBox pictureBox;
         Image<Bgr, Byte> frame;
-        public Rectangle barRect1080p = new Rectangle(275, 965, 220, 55);
+        public Rectangle trackingRect;
 
         List<float> valuesRead;
         public int readsPerSecond = 30;
@@ -60,8 +60,9 @@ namespace InHeat
             }
         }
 
-        public OnFireTracker(PictureBox pictureBox1)
+        public OnFireTracker(Rectangle _trackingRect, PictureBox pictureBox1)
         {
+            trackingRect = _trackingRect;
             pictureBox = pictureBox1;
             valuesRead = new List<float>();
         }
@@ -106,10 +107,10 @@ namespace InHeat
 
             if (cyanContours.Size > 0)
             {
-                var index = FindContourClosestToBottomRight(cyanContours);
+                var index = FindClosestContourToBottomRight(cyanContours);
                 CvInvoke.DrawContours(frameCopy, cyanContours, index, new MCvScalar(0, 0, 255), 2);
                 value = CvInvoke.BoundingRectangle(cyanContours[index]).Right;
-                value /= barRect1080p.Width;
+                value /= trackingRect.Width;
             }
             else
             {
@@ -130,7 +131,7 @@ namespace InHeat
             return value;
         }
 
-        int FindContourClosestToBottomRight(VectorOfVectorOfPoint contours)
+        int FindClosestContourToBottomRight(VectorOfVectorOfPoint contours)
         {
             int chosenContourIndex = -1;            
             var minDistFromLowerLeft = 9999;
@@ -149,9 +150,9 @@ namespace InHeat
 
         void CaptureFrame()
         {
-            Bitmap captureBitmap = new Bitmap(barRect1080p.Width, barRect1080p.Height);
+            Bitmap captureBitmap = new Bitmap(trackingRect.Width, trackingRect.Height);
             Graphics captureGraphics = Graphics.FromImage(captureBitmap);
-            captureGraphics.CopyFromScreen(barRect1080p.Left, barRect1080p.Top, 0, 0, barRect1080p.Size);
+            captureGraphics.CopyFromScreen(trackingRect.Left, trackingRect.Top, 0, 0, trackingRect.Size);
             frame = captureBitmap.ToImage<Bgr, Byte>();
         }
     }

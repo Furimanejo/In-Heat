@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-
 namespace InHeat
 {
     public partial class Overlay : Form
@@ -19,12 +18,14 @@ namespace InHeat
         [DllImport("user32.dll", SetLastError = true)]
         static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
+        public Rectangle trackingRect { get; set; }
         int trackingchartMaxPoints = 80;
 
-        public Overlay(Rectangle _position)
+        public Overlay()
         {
             InitializeComponent();        
 
+            trackingRect = ControlRectangle(trackingBox);
             Rectangle rect = ControlRectangle(trackingChart);
 
             this.Size = Screen.PrimaryScreen.Bounds.Size;
@@ -68,19 +69,6 @@ namespace InHeat
             SetWindowLong(this.Handle, -20, initialStyle | 0x80000 | 0x20);
 
             this.TopMost = true;
-        }
-
-
-        [DllImport("User32.dll")]
-        private static extern IntPtr GetDC(IntPtr hWnd);
-        private void AdjustClientWidthToDPIScale()
-        {
-            double dpiKoef = Graphics.FromHdc(GetDC(IntPtr.Zero)).DpiX / 96f;
-
-            int compansatedWidth = (int)(ClientSize.Width * dpiKoef);
-
-
-            this.ClientSize = new Size(compansatedWidth, this.ClientSize.Height);
         }
 
         public void AddPointsToChart(float raw, float filtered)

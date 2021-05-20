@@ -206,7 +206,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(462, 532);
+            this.ClientSize = new System.Drawing.Size(474, 330);
             this.Controls.Add(this.overlayCheckBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -218,6 +218,7 @@
             this.Controls.Add(this.trackingUpdateFrequencyBar);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TrackerPictureBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "GUI";
             this.Text = "In Heat";
             ((System.ComponentModel.ISupportInitialize)(this.TrackerPictureBox)).EndInit();
