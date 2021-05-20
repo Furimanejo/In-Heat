@@ -120,10 +120,7 @@ namespace InHeat
                 value = onFireTracker.movingAverage;
                 // interpolation
                 value =  value * (float)(maxIntensity.Value - minIntensity.Value)/100;
-                value += (float) minIntensity.Value / 100;
-                // clamp
-                value = value > 0 ? value : 0;
-                value = value < 1 ? value : 1; 
+                value += (float) minIntensity.Value / 100;                
             }
             try
             {
@@ -138,6 +135,16 @@ namespace InHeat
                 overlay.Show();
             else
                 overlay.Hide();
+        }
+
+        private void maxIntensity_ValueChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void minIntensity_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

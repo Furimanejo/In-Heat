@@ -43,7 +43,11 @@ namespace InHeat
 
         public async Task UpdateValue(float value)
         {
-            foreach(var device in client.Devices)
+            // clamp
+            value = value > 0 ? value : 0;
+            value = value < 1 ? value : 1;
+            // send
+            foreach (var device in client.Devices)
             {
                 if (device.Name.Contains("Gamepad"))
                     await device.SendStopDeviceCmd();

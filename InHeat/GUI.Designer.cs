@@ -40,8 +40,8 @@
             this.minIntensity = new System.Windows.Forms.NumericUpDown();
             this.maxIntensity = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.overlayCheckBox = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.TrackerPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackingUpdateFrequencyBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minIntensity)).BeginInit();
@@ -52,7 +52,7 @@
             // 
             this.TrackerPictureBox.Location = new System.Drawing.Point(12, 43);
             this.TrackerPictureBox.Name = "TrackerPictureBox";
-            this.TrackerPictureBox.Size = new System.Drawing.Size(438, 64);
+            this.TrackerPictureBox.Size = new System.Drawing.Size(300, 50);
             this.TrackerPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.TrackerPictureBox.TabIndex = 0;
             this.TrackerPictureBox.TabStop = false;
@@ -76,7 +76,7 @@
             // trackingUpdateFrequencyBar
             // 
             this.trackingUpdateFrequencyBar.AutoSize = false;
-            this.trackingUpdateFrequencyBar.Location = new System.Drawing.Point(220, 143);
+            this.trackingUpdateFrequencyBar.Location = new System.Drawing.Point(237, 171);
             this.trackingUpdateFrequencyBar.Maximum = 60;
             this.trackingUpdateFrequencyBar.Minimum = 10;
             this.trackingUpdateFrequencyBar.Name = "trackingUpdateFrequencyBar";
@@ -93,7 +93,7 @@
             // 
             this.trackingUpdatesLabel.AutoSize = true;
             this.trackingUpdatesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.trackingUpdatesLabel.Location = new System.Drawing.Point(216, 116);
+            this.trackingUpdatesLabel.Location = new System.Drawing.Point(12, 171);
             this.trackingUpdatesLabel.Name = "trackingUpdatesLabel";
             this.trackingUpdatesLabel.Size = new System.Drawing.Size(185, 24);
             this.trackingUpdatesLabel.TabIndex = 3;
@@ -101,9 +101,9 @@
             // 
             // connectButton
             // 
-            this.connectButton.Location = new System.Drawing.Point(13, 113);
+            this.connectButton.Location = new System.Drawing.Point(330, 43);
             this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(197, 56);
+            this.connectButton.Size = new System.Drawing.Size(133, 50);
             this.connectButton.TabIndex = 5;
             this.connectButton.Text = "Connect";
             this.connectButton.UseVisualStyleBackColor = true;
@@ -119,11 +119,11 @@
             // 
             this.UpdateDevicesCheckbox.AutoSize = true;
             this.UpdateDevicesCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpdateDevicesCheckbox.Location = new System.Drawing.Point(12, 242);
+            this.UpdateDevicesCheckbox.Location = new System.Drawing.Point(234, 99);
             this.UpdateDevicesCheckbox.Name = "UpdateDevicesCheckbox";
-            this.UpdateDevicesCheckbox.Size = new System.Drawing.Size(301, 35);
+            this.UpdateDevicesCheckbox.Size = new System.Drawing.Size(229, 35);
             this.UpdateDevicesCheckbox.TabIndex = 6;
-            this.UpdateDevicesCheckbox.Text = "Send value to devices";
+            this.UpdateDevicesCheckbox.Text = "Control Devices";
             this.UpdateDevicesCheckbox.UseVisualStyleBackColor = true;
             // 
             // minIntensity
@@ -133,7 +133,7 @@
             0,
             0,
             0});
-            this.minIntensity.Location = new System.Drawing.Point(300, 186);
+            this.minIntensity.Location = new System.Drawing.Point(275, 140);
             this.minIntensity.Maximum = new decimal(new int[] {
             99,
             0,
@@ -147,6 +147,7 @@
             this.minIntensity.Name = "minIntensity";
             this.minIntensity.Size = new System.Drawing.Size(65, 22);
             this.minIntensity.TabIndex = 7;
+            this.minIntensity.ValueChanged += new System.EventHandler(this.minIntensity_ValueChanged);
             // 
             // maxIntensity
             // 
@@ -155,7 +156,7 @@
             0,
             0,
             0});
-            this.maxIntensity.Location = new System.Drawing.Point(300, 214);
+            this.maxIntensity.Location = new System.Drawing.Point(382, 140);
             this.maxIntensity.Minimum = new decimal(new int[] {
             100,
             0,
@@ -169,46 +170,47 @@
             0,
             0,
             0});
+            this.maxIntensity.ValueChanged += new System.EventHandler(this.maxIntensity_ValueChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(9, 188);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(12, 137);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(242, 20);
+            this.label2.Size = new System.Drawing.Size(226, 24);
             this.label2.TabIndex = 9;
-            this.label2.Text = "Device intensity(%) at 0% fire: ";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(9, 216);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(260, 20);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Device intensity(%) at 100% fire: ";
+            this.label2.Text = "Device intensity(%) range:";
             // 
             // overlayCheckBox
             // 
             this.overlayCheckBox.AutoSize = true;
             this.overlayCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.overlayCheckBox.Location = new System.Drawing.Point(12, 283);
+            this.overlayCheckBox.Location = new System.Drawing.Point(12, 99);
             this.overlayCheckBox.Name = "overlayCheckBox";
-            this.overlayCheckBox.Size = new System.Drawing.Size(199, 35);
+            this.overlayCheckBox.Size = new System.Drawing.Size(205, 35);
             this.overlayCheckBox.TabIndex = 11;
-            this.overlayCheckBox.Text = "Show overlay";
+            this.overlayCheckBox.Text = "Show Overlay";
             this.overlayCheckBox.UseVisualStyleBackColor = true;
             this.overlayCheckBox.CheckedChanged += new System.EventHandler(this.overlayCheckBox_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(351, 137);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(25, 24);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "to";
             // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(474, 330);
-            this.Controls.Add(this.overlayCheckBox);
+            this.ClientSize = new System.Drawing.Size(474, 209);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.overlayCheckBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.maxIntensity);
             this.Controls.Add(this.minIntensity);
@@ -243,8 +245,8 @@
         private System.Windows.Forms.NumericUpDown minIntensity;
         private System.Windows.Forms.NumericUpDown maxIntensity;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox overlayCheckBox;
+        private System.Windows.Forms.Label label3;
     }
 }
 
