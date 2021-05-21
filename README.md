@@ -5,8 +5,8 @@ Here's a list of suported devices (only vibrating toys will work for now): https
 
 ## Warnings 
 
-- This application is not a cheat nor does it inject any code into Overwatch, but Blizzard's End User Licence Agreement is vague, so I can't guarantee you won't be banned. Use In Heat at your own risk.
-- Remember to always play safe, sane and consensual. Please, do not drag unsuspecting players into your play.
+- This application is not a cheat nor does it inject any code into Overwatch, but Blizzard's End User Licence Agreement is vague, so I can't guarantee you won't be banned. _**Use In Heat at your own risk**_.
+- Remember to always play safe, sane and consensual. Please, _**do not drag unsuspecting players into your play**_.
 
 ## Making It Run
 
@@ -14,7 +14,7 @@ Here's a list of suported devices (only vibrating toys will work for now): https
 - Download a release(.zip file) of [In Heat](https://github.com/Furimanejo/In-Heat/releases) and extract it to a folder.
 - Open Intiface Desktop and start the server, the computer icon on the top right should turn green.
 - Turn on (Bluetooth) or connect (USB) your devices.
-- Open In Heat and click connect, Intiface's phone icon should turn green and a list of connected devices should appear in the Server Status tab.
+- Open the InHeat executable inside the folder and click connect. Intiface's phone icon should turn green and a list of connected devices should appear.
 - Open the game and test it. You can easily do so by creating a game with bots (Play > Game Browser > Create > Add IA).
 
 ## Bugs And Observations
