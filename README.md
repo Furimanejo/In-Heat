@@ -1,16 +1,21 @@
 # In Heat
 An application to control sex toys based on the user's performance in Overwatch (On-fire Meter)
 
-Here's a list of suported devices: https://iostindex.com/?filter0ButtplugSupport=7
+Here's a list of suported devices (only vibrating toys will work for now): https://iostindex.com/?filter0ButtplugSupport=7
+
+## Warnings 
+
+- This application is not a cheat nor does it inject any code into Overwatch, but Blizzard's End User Licence Agreement is vague, so I can't guarantee you won't be banned. Use In Heat at your own risk.
+- Remember to always play safe, sane and consensual. Please, do not drag unsuspecting players into your play.
 
 ## Making It Run
 
-- Download [In Heat](https://github.com/Furimanejo/In-Heat/releases) and [Intiface Desktop](https://intiface.com/desktop/).
+- Dowload and install [Intiface Desktop](https://intiface.com/desktop/).
+- Download a release(.zip file) of [In Heat](https://github.com/Furimanejo/In-Heat/releases) and extract it to a folder.
 - Open Intiface Desktop and start the server, the computer icon on the top right should turn green.
 - Turn on (Bluetooth) or connect (USB) your devices.
 - Open In Heat and click connect, Intiface's phone icon should turn green and a list of connected devices should appear in the Server Status tab.
-- Open the game and enter the Practice Range, or alternatively open a Image/Video of the game in full screen.
-- In Heat should now be tracking the On-fire Meter and updating the read value to the connected devices.
+- Open the game and test it. You can easily do so by creating a game with bots (Play > Game Browser > Create > Add IA).
 
 ## Bugs And Observations
 
