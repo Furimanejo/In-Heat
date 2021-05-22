@@ -135,7 +135,7 @@
             0,
             0,
             0});
-            this.minIntensity.Location = new System.Drawing.Point(284, 138);
+            this.minIntensity.Location = new System.Drawing.Point(278, 138);
             this.minIntensity.Maximum = new decimal(new int[] {
             99,
             0,
@@ -200,7 +200,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(355, 135);
+            this.label3.Location = new System.Drawing.Point(350, 135);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(25, 24);
             this.label3.TabIndex = 12;
@@ -209,7 +209,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(81, 209);
+            this.linkLabel1.Location = new System.Drawing.Point(73, 209);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(194, 17);
             this.linkLabel1.TabIndex = 13;
