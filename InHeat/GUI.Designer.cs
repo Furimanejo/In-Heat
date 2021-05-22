@@ -42,6 +42,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.overlayCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.TrackerPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackingUpdateFrequencyBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minIntensity)).BeginInit();
@@ -67,16 +69,16 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(7, 9);
+            this.label1.Location = new System.Drawing.Point(6, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(261, 31);
+            this.label1.Size = new System.Drawing.Size(291, 31);
             this.label1.TabIndex = 1;
-            this.label1.Text = "On-fire bar tracking: ";
+            this.label1.Text = "On-fire meter tracking: ";
             // 
             // trackingUpdateFrequencyBar
             // 
             this.trackingUpdateFrequencyBar.AutoSize = false;
-            this.trackingUpdateFrequencyBar.Location = new System.Drawing.Point(237, 171);
+            this.trackingUpdateFrequencyBar.Location = new System.Drawing.Point(237, 169);
             this.trackingUpdateFrequencyBar.Maximum = 60;
             this.trackingUpdateFrequencyBar.Minimum = 10;
             this.trackingUpdateFrequencyBar.Name = "trackingUpdateFrequencyBar";
@@ -93,7 +95,7 @@
             // 
             this.trackingUpdatesLabel.AutoSize = true;
             this.trackingUpdatesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.trackingUpdatesLabel.Location = new System.Drawing.Point(12, 171);
+            this.trackingUpdatesLabel.Location = new System.Drawing.Point(8, 169);
             this.trackingUpdatesLabel.Name = "trackingUpdatesLabel";
             this.trackingUpdatesLabel.Size = new System.Drawing.Size(185, 24);
             this.trackingUpdatesLabel.TabIndex = 3;
@@ -103,7 +105,7 @@
             // 
             this.connectButton.Location = new System.Drawing.Point(330, 43);
             this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(133, 50);
+            this.connectButton.Size = new System.Drawing.Size(117, 50);
             this.connectButton.TabIndex = 5;
             this.connectButton.Text = "Connect";
             this.connectButton.UseVisualStyleBackColor = true;
@@ -118,10 +120,10 @@
             // UpdateDevicesCheckbox
             // 
             this.UpdateDevicesCheckbox.AutoSize = true;
-            this.UpdateDevicesCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UpdateDevicesCheckbox.Location = new System.Drawing.Point(234, 99);
+            this.UpdateDevicesCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpdateDevicesCheckbox.Location = new System.Drawing.Point(12, 99);
             this.UpdateDevicesCheckbox.Name = "UpdateDevicesCheckbox";
-            this.UpdateDevicesCheckbox.Size = new System.Drawing.Size(229, 35);
+            this.UpdateDevicesCheckbox.Size = new System.Drawing.Size(205, 33);
             this.UpdateDevicesCheckbox.TabIndex = 6;
             this.UpdateDevicesCheckbox.Text = "Control Devices";
             this.UpdateDevicesCheckbox.UseVisualStyleBackColor = true;
@@ -133,7 +135,7 @@
             0,
             0,
             0});
-            this.minIntensity.Location = new System.Drawing.Point(275, 140);
+            this.minIntensity.Location = new System.Drawing.Point(284, 138);
             this.minIntensity.Maximum = new decimal(new int[] {
             99,
             0,
@@ -156,7 +158,7 @@
             0,
             0,
             0});
-            this.maxIntensity.Location = new System.Drawing.Point(382, 140);
+            this.maxIntensity.Location = new System.Drawing.Point(382, 138);
             this.maxIntensity.Minimum = new decimal(new int[] {
             100,
             0,
@@ -176,7 +178,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 137);
+            this.label2.Location = new System.Drawing.Point(8, 135);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(226, 24);
             this.label2.TabIndex = 9;
@@ -185,10 +187,10 @@
             // overlayCheckBox
             // 
             this.overlayCheckBox.AutoSize = true;
-            this.overlayCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.overlayCheckBox.Location = new System.Drawing.Point(12, 99);
+            this.overlayCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.overlayCheckBox.Location = new System.Drawing.Point(266, 99);
             this.overlayCheckBox.Name = "overlayCheckBox";
-            this.overlayCheckBox.Size = new System.Drawing.Size(205, 35);
+            this.overlayCheckBox.Size = new System.Drawing.Size(184, 33);
             this.overlayCheckBox.TabIndex = 11;
             this.overlayCheckBox.Text = "Show Overlay";
             this.overlayCheckBox.UseVisualStyleBackColor = true;
@@ -198,17 +200,38 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(351, 137);
+            this.label3.Location = new System.Drawing.Point(355, 135);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(25, 24);
             this.label3.TabIndex = 12;
             this.label3.Text = "to";
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(81, 209);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(194, 17);
+            this.linkLabel1.TabIndex = 13;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://github.com/Furimanejo";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 209);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(66, 17);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "made by:";
+            // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(474, 209);
+            this.ClientSize = new System.Drawing.Size(462, 235);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.overlayCheckBox);
             this.Controls.Add(this.label2);
@@ -247,6 +270,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox overlayCheckBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label4;
     }
 }
 
