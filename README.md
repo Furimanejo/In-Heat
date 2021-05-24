@@ -1,5 +1,5 @@
 # In Heat
-An application to control sex toys based on the user's performance in Overwatch (On-fire Meter)
+A windows application to control sex toys based on the user's performance in Overwatch (On-fire Meter)
 
 Here's a list of suported devices (only vibrating toys will work for now): https://iostindex.com/?filter0ButtplugSupport=7
 
