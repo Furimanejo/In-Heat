@@ -244,6 +244,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TrackerPictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "GUI";
             this.Text = "In Heat";
             ((System.ComponentModel.ISupportInitialize)(this.TrackerPictureBox)).EndInit();
