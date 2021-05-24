@@ -5,11 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Drawing.Imaging;
 
-using System.Windows.Input;
-
-using Emgu;
 using Emgu.CV;
 using Emgu.CV.Util;
 using Emgu.CV.Structure;
@@ -152,7 +148,14 @@ namespace InHeat
         {
             Bitmap captureBitmap = new Bitmap(trackingRect.Width, trackingRect.Height);
             Graphics captureGraphics = Graphics.FromImage(captureBitmap);
-            captureGraphics.CopyFromScreen(trackingRect.Left, trackingRect.Top, 0, 0, trackingRect.Size);
+            try
+            {
+                captureGraphics.CopyFromScreen(trackingRect.Left, trackingRect.Top, 0, 0, trackingRect.Size);
+            }
+            catch 
+            {
+                Console.WriteLine("Failed to capture screen");
+            }
             frame = captureBitmap.ToImage<Bgr, Byte>();
         }
     }
