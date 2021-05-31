@@ -10,6 +10,8 @@ Here's a list of suported devices (only vibrating toys will work for now): https
 
 ## Making It Run
 
+ Video Tutorial: https://youtu.be/tNbJhKMKyC4
+
 - Dowload and install [Intiface Desktop](https://intiface.com/desktop/).
 - Download a release(.zip file) of [In Heat](https://github.com/Furimanejo/In-Heat/releases) and extract it to a folder.
 - Open Intiface Desktop and start the server, the computer icon on the top right should turn green.
@@ -35,6 +37,7 @@ If you liked this application and want to support me, you can do so at my [Ko-fi
 ## How It Works
 
 #### Controling Devices
+
 In Heat uses the [Buttplug library](https://buttplug.io/). Buttplug is an open-source standards and software project for controlling intimate hardware, including sex toys, fucking machines, and more.
 
 #### Tracking The On-fire Meter
