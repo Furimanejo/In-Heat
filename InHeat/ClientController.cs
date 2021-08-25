@@ -13,6 +13,9 @@ namespace InHeat
         ButtplugClient client;
         public bool isConnected { get { return client.Connected; } }
 
+        double linearPosition = 0;
+        int linearDirectionMultiplier = 1;
+
         public ClientController()
         {
             Console.WriteLine("Initializing Client Controller");
@@ -41,18 +44,45 @@ namespace InHeat
             await client.StartScanningAsync();
         }
 
-        public async Task UpdateValue(float value)
+        public async Task UpdateValue(float value, uint deltaMiliseconds)
         {
-            // clamp
+            // clamp value
             value = value > 0 ? value : 0;
             value = value < 1 ? value : 1;
+
+            // linear oscillation
+            var minFrequency = 0f;
+            var maxFrequency = 2f;
+            var linearOScillationFrequency = minFrequency + value *(maxFrequency- minFrequency);
+            uint duration = Convert.ToUInt32((1000/2) / linearOScillationFrequency);
+
+            linearPosition += linearDirectionMultiplier * linearOScillationFrequency * deltaMiliseconds / 1000;
+            bool sendLinearCmd = false;
+            if (linearPosition > 1)
+            {
+                linearPosition = 1;
+                sendLinearCmd = true;
+                linearDirectionMultiplier = -1;
+            }
+            else if (linearPosition < 0)
+            {
+                linearPosition = 0;
+                sendLinearCmd = true;
+                linearDirectionMultiplier = 1;
+            }
+
             // send
             foreach (var device in client.Devices)
             {
-                if (device.Name.Contains("Gamepad"))
-                    await device.SendStopDeviceCmd();
-                if(device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.VibrateCmd))
+                if (device.Name.Contains("Gamepad")) 
+                    await device.SendStopDeviceCmd(); //avoid some bugs with gamepads
+
+                if (device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.VibrateCmd))
                     await device.SendVibrateCmd(value);
+
+                if (sendLinearCmd)
+                    if (device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.LinearCmd))
+                        await device.SendLinearCmd(duration, linearPosition);
             }
         }
     }

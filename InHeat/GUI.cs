@@ -124,7 +124,8 @@ namespace InHeat
             }
             try
             {
-                await clientController.UpdateValue(value);
+                var deltaTime = Convert.ToUInt32(clientUpdateTimer.Interval);
+                await clientController.UpdateValue(value, deltaTime);
             }
             catch{ Console.WriteLine("Error Update Device Value"); }
         }
@@ -152,7 +153,7 @@ namespace InHeat
             clientUpdateTimer.Enabled = false;
             try
             {
-                await clientController.UpdateValue(value);
+                await clientController.UpdateValue(value, 0);
                 await Task.Delay(miliseconds);
             }
             catch { }
