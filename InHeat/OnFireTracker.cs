@@ -157,6 +157,24 @@ namespace InHeat
                 Console.WriteLine("Failed to capture screen");
             }
             frame = captureBitmap.ToImage<Bgr, Byte>();
+
+            Point[] upperMask =
+            {
+                new Point(0, 0),
+                new Point(0, frame.Height / 3),
+                new Point(frame.Width, frame.Height/8),
+                new Point(frame.Width, 0)
+            };
+            Point[] lowerMask =
+            {
+                new Point(0, frame.Height),
+                new Point(0,  (int)(0.7*frame.Height)),
+                new Point(frame.Width, (int)(0.4*frame.Height)),
+                new Point(frame.Width, frame.Height)
+            };
+            CvInvoke.FillConvexPoly(frame, new VectorOfPoint(upperMask), new MCvScalar(0,0,0));
+            CvInvoke.FillConvexPoly(frame, new VectorOfPoint(lowerMask), new MCvScalar(0,0,0));
+            
         }
     }
 }
