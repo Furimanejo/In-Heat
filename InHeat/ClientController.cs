@@ -47,14 +47,23 @@ namespace InHeat
         public async Task UpdateValue(float value, uint deltaMiliseconds)
         {
             // clamp value
-            value = value > 0 ? value : 0;
-            value = value < 1 ? value : 1;
+            value = value > 0f ? value : 0f;
+            value = value < 1f ? value : 1f;
 
             // linear oscillation
             var minFrequency = 0f;
             var maxFrequency = 2f;
             var linearOScillationFrequency = minFrequency + value *(maxFrequency- minFrequency);
-            uint duration = Convert.ToUInt32((1000/2) / linearOScillationFrequency);
+
+            uint duration;
+            try
+            {
+                duration = Convert.ToUInt32((1000 / 2) / linearOScillationFrequency);
+            }
+            catch 
+            {
+                duration = uint.MaxValue;
+            }
 
             linearPosition += linearDirectionMultiplier * linearOScillationFrequency * deltaMiliseconds / 1000;
             bool sendLinearCmd = false;
@@ -80,8 +89,7 @@ namespace InHeat
                 if (device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.VibrateCmd))
                     await device.SendVibrateCmd(value);
 
-                if (sendLinearCmd)
-                    if (device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.LinearCmd))
+                if (sendLinearCmd && device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.LinearCmd))
                         await device.SendLinearCmd(duration, linearPosition);
             }
         }

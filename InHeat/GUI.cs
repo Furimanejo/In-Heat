@@ -114,20 +114,15 @@ namespace InHeat
 
         private async void clientUpdateTimer_Tick(object sender, EventArgs e)
         {
-            float value = 0;
             if (UpdateDevicesCheckbox.Checked)
             {
-                value = onFireTracker.movingAverage;
+                float value = onFireTracker.movingAverage;
                 // interpolation
                 value =  value * (float)(maxIntensity.Value - minIntensity.Value)/100;
                 value += (float) minIntensity.Value / 100;                
-            }
-            try
-            {
                 var deltaTime = Convert.ToUInt32(clientUpdateTimer.Interval);
                 await clientController.UpdateValue(value, deltaTime);
             }
-            catch{ Console.WriteLine("Error Update Device Value"); }
         }
 
         private void overlayCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -155,6 +150,7 @@ namespace InHeat
             {
                 await clientController.UpdateValue(value, 0);
                 await Task.Delay(miliseconds);
+                await clientController.UpdateValue(0, 0);
             }
             catch { }
             clientUpdateTimer.Enabled = true;
