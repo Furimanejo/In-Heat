@@ -163,5 +163,11 @@ namespace InHeat
             catch { }
             clientUpdateTimer.Enabled = true;
         }
+
+        private async void UpdateDevicesCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (UpdateDevicesCheckbox.Checked == false)
+                await ForceDeviceValue(0, 100);
+        }
     }
 }

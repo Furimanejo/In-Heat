@@ -122,6 +122,7 @@
             this.UpdateDevicesCheckbox.TabIndex = 6;
             this.UpdateDevicesCheckbox.Text = "Control Devices";
             this.UpdateDevicesCheckbox.UseVisualStyleBackColor = true;
+            this.UpdateDevicesCheckbox.CheckedChanged += new System.EventHandler(this.UpdateDevicesCheckbox_CheckedChanged);
             // 
             // minIntensity
             // 
