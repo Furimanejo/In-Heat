@@ -118,8 +118,8 @@ namespace InHeat
             {
                 float value = onFireTracker.movingAverage;
                 // interpolation
-                value =  value * (float)(maxIntensity.Value - minIntensity.Value)/100;
-                value += (float) minIntensity.Value / 100;                
+                value = value * (float)(maxIntensity.Value - minIntensity.Value) / 100;
+                value += (float)minIntensity.Value / 100;
                 var deltaTime = Convert.ToUInt32(clientUpdateTimer.Interval);
                 await clientController.UpdateValue(value, deltaTime);
             }
@@ -137,10 +137,18 @@ namespace InHeat
         {
             await ForceDeviceValue((float)maxIntensity.Value / 100f, 700);
         }
-
         private async void minIntensity_ValueChanged(object sender, EventArgs e)
         {
             await ForceDeviceValue((float)minIntensity.Value / 100f, 700);
+        }
+
+        private void ChangeMinBPM(object sender, EventArgs e)
+        {
+            clientController.minBPM = (int)minBPM.Value;
+        }
+        private void ChangeMaxBPM(object sender, EventArgs e)
+        {
+            clientController.maxBPM = (int)maxBPM.Value;
         }
 
         async Task ForceDeviceValue(float value, int miliseconds)

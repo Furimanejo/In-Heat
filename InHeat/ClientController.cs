@@ -15,6 +15,8 @@ namespace InHeat
 
         double linearPosition = 0;
         int linearDirectionMultiplier = 1;
+        internal int minBPM;
+        internal int maxBPM;
 
         public ClientController()
         {
@@ -51,9 +53,7 @@ namespace InHeat
             value = value < 1f ? value : 1f;
 
             // linear oscillation
-            var minFrequency = 0f;
-            var maxFrequency = 2f;
-            var linearOScillationFrequency = minFrequency + value *(maxFrequency- minFrequency);
+            float linearOScillationFrequency = (minBPM + value * (maxBPM- minBPM))/60;
 
             uint duration;
             try
