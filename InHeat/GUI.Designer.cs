@@ -59,7 +59,7 @@
             // 
             this.TrackerPictureBox.Location = new System.Drawing.Point(256, 61);
             this.TrackerPictureBox.Name = "TrackerPictureBox";
-            this.TrackerPictureBox.Size = new System.Drawing.Size(255, 64);
+            this.TrackerPictureBox.Size = new System.Drawing.Size(264, 64);
             this.TrackerPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.TrackerPictureBox.TabIndex = 0;
             this.TrackerPictureBox.TabStop = false;
@@ -209,7 +209,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(325, 217);
+            this.linkLabel1.Location = new System.Drawing.Point(83, 217);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(194, 17);
             this.linkLabel1.TabIndex = 13;
@@ -219,7 +219,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(253, 217);
+            this.label4.Location = new System.Drawing.Point(14, 217);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(66, 17);
             this.label4.TabIndex = 14;
@@ -293,7 +293,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 250);
+            this.ClientSize = new System.Drawing.Size(537, 249);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.linkLabel1);
