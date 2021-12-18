@@ -253,7 +253,7 @@
             this.minBPM.Name = "minBPM";
             this.minBPM.Size = new System.Drawing.Size(65, 30);
             this.minBPM.TabIndex = 7;
-            this.minBPM.ValueChanged += new System.EventHandler(this.ChangeMinBPM);
+            this.minBPM.ValueChanged += new System.EventHandler(this.UpdateMinBPM);
             // 
             // label6
             // 
@@ -287,7 +287,7 @@
             0,
             0,
             0});
-            this.maxBPM.ValueChanged += new System.EventHandler(this.maxIntensity_ValueChanged);
+            this.maxBPM.ValueChanged += new System.EventHandler(this.UpdateMaxBPM);
             // 
             // GUI
             // 

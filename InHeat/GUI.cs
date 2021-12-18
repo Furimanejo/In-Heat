@@ -22,11 +22,12 @@ namespace InHeat
         {
             InitializeComponent();
             clientController = new ClientController();
+            UpdateMinBPM(null, null);
+            UpdateMaxBPM(null, null);
             overlay = new Overlay();
 
             var trackRect = ScaleRectangleToResolution(overlay.trackingRect);
             onFireTracker = new OnFireTracker(trackRect, TrackerPictureBox);
-            //overlay.Show();
             UpdateTrackingFrequency();
         }
 
@@ -142,13 +143,13 @@ namespace InHeat
             await ForceDeviceValue((float)minIntensity.Value / 100f, 700);
         }
 
-        private void ChangeMinBPM(object sender, EventArgs e)
+        private void UpdateMinBPM(object sender, EventArgs e)
         {
-            clientController.minBPM = (int)minBPM.Value;
+            clientController.minBPM = (float)minBPM.Value;
         }
-        private void ChangeMaxBPM(object sender, EventArgs e)
+        private void UpdateMaxBPM(object sender, EventArgs e)
         {
-            clientController.maxBPM = (int)maxBPM.Value;
+            clientController.maxBPM = (float)maxBPM.Value;
         }
 
         async Task ForceDeviceValue(float value, int miliseconds)
