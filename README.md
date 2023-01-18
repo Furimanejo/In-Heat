@@ -1,6 +1,7 @@
 # In Heat
 
 (Deprecated with the release of Overwatch 2, see [Underwatch](https://github.com/Furimanejo/Underwatch) for a similar OW2-compatible mod)
+
 A windows application to control sex toys based on the user's performance in Overwatch (On-fire Meter)
 
 Here's a list of suported devices (only vibrating or linear toys will work for now): https://iostindex.com/?filter0ButtplugSupport=4
